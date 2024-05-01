@@ -1,5 +1,6 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
+import { writeText } from '@tauri-apps/api/clipboard';
 import { open } from '@tauri-apps/api/dialog'
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
@@ -14,7 +15,7 @@ function App() {
   }
 
   async function myCustomCommand() {
-    setGreetMsg(await invoke("my_custom_command", { invokeMessage: 'Helloooooooo!' }));
+    writeText(await invoke("my_custom_command", { invokeMessage: 'Helloooooooo!' }));
   }
 
   function executeCommands() {
@@ -60,7 +61,7 @@ function App() {
 
       <p>{greetMsg}</p>
       <p>これはテストです</p>
-      <button onClick={myCustomCommand}>myCustomCommand Test</button>
+      <button onClick={myCustomCommand}>Clipboard Test</button>
       <button onClick={executeCommands}>Invoke Test</button>
       <button onClick={openDialog}>Open file dialog</button>
     </div>
