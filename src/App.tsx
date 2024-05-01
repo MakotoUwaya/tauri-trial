@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { writeText } from '@tauri-apps/api/clipboard';
 import { open } from '@tauri-apps/api/dialog';
-import { emit } from '@tauri-apps/api/event';
+import { emit, listen } from '@tauri-apps/api/event';
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
@@ -30,6 +30,22 @@ function App() {
   function emitMessage() {
     emit('front-to-back', "hello from front")
   }
+
+  useEffect(() => {
+    let unlisten: any;
+    async function f() {
+      unlisten = await listen('back-to-front', event => {
+        console.log(`back-to-front ${event.payload} ${new Date()}`)
+      });
+    }
+    f();
+
+    return () => {
+      if (unlisten) {
+        unlisten();
+      }
+    }
+  }, [])
 
   return (
     <div className="container">
