@@ -1,7 +1,8 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { writeText } from '@tauri-apps/api/clipboard';
-import { open } from '@tauri-apps/api/dialog'
+import { open } from '@tauri-apps/api/dialog';
+import { emit } from '@tauri-apps/api/event';
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
@@ -24,6 +25,10 @@ function App() {
 
   function openDialog() {
     open().then(files => console.log(files))
+  }
+
+  function emitMessage() {
+    emit('front-to-back', "hello from front")
   }
 
   return (
@@ -64,6 +69,7 @@ function App() {
       <button onClick={myCustomCommand}>Clipboard Test</button>
       <button onClick={executeCommands}>Invoke Test</button>
       <button onClick={openDialog}>Open file dialog</button>
+      <button onClick={emitMessage}>Emit message</button>
     </div>
   );
 }
