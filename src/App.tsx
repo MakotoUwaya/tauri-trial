@@ -1,5 +1,6 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
+import { open } from '@tauri-apps/api/dialog'
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
@@ -18,6 +19,10 @@ function App() {
 
   function executeCommands() {
     invoke('simple_command')
+  }
+
+  function openDialog() {
+    open().then(files => console.log(files))
   }
 
   return (
@@ -57,6 +62,7 @@ function App() {
       <p>これはテストです</p>
       <button onClick={myCustomCommand}>myCustomCommand Test</button>
       <button onClick={executeCommands}>Invoke Test</button>
+      <button onClick={openDialog}>Open file dialog</button>
     </div>
   );
 }
